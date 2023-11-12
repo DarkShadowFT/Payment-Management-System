@@ -1,0 +1,19 @@
+databaseChangeLog:
+  - include:
+      file: schema-1.0.0.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: data-1.0.0.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: schema-1.0.0-1.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: data-1.0.0-1.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: schema-1.0.0-2.yaml
+      relativeToChangelogFile: true
+  - include:
+      file: data-1.0.0-2.yaml
+      relativeToChangelogFile: true

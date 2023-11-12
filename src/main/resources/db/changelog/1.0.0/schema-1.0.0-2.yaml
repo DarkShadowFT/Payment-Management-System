@@ -1,0 +1,59 @@
+databaseChangeLog:
+  - changeSet:
+      id: schema-1.0.0-2
+      author: muhammad_ahmed
+      changes:
+        - createTable:
+            tableName: users
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: username
+                  type: varchar(100)
+                  constraints:
+                    unique: true
+              - column:
+                  name: password
+                  type: varchar(100)
+              - column:
+                  name: enabled
+                  type: boolean
+                  defaultValue: true
+
+        - createTable:
+            tableName: authorities
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: username
+                  type: varchar(100)
+              - column:
+                  name: user_id
+                  type: BIGINT
+              - column:
+                  name: authority
+                  type: varchar(50)
+
+        - addForeignKeyConstraint:
+            baseTableName: authorities
+            baseColumnNames: user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: FK_id
+
+        - addForeignKeyConstraint:
+            baseTableName: accounts
+            baseColumnNames: authentication_user_id
+            referencedTableName: users
+            referencedColumnNames: id
+            constraintName: FK_authentication_user_id

@@ -1,0 +1,255 @@
+databaseChangeLog:
+# Creating tables
+  - changeSet:
+      id: create_banks_table
+      author: muhammad_ahmed
+      changes:
+        - createTable:
+            tableName: banks
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: bank_id
+                  type: varchar(4)
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: UK_bank_id
+              - column:
+                  name: country
+                  type: varchar(2)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: create_accounts_table
+      author: muhammad_ahmed
+      changes:
+        - createTable:
+            tableName: accounts
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: account_number
+                  type: varchar(34)
+                  constraints:
+                    unique: true
+                    uniqueConstraintName: UK_account_number
+              - column:
+                  name: holder_name
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: currency_code
+                  type: varchar(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: bank_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: authentication_user_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: create_payments_table
+      author: muhammad_ahmed
+      changes:
+        - createTable:
+            tableName: payments
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: payment_id
+                  type: uuid
+                  constraints:
+                    nullable: false
+                    unique: true
+                    uniqueConstraintName: UK_payment_id
+              - column:
+                  name: source_account_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: target_account_id
+                  type: BIGINT
+                  constraints:
+                    nullable: false
+              - column:
+                  name: amount
+                  type: decimal(18, 5)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status_code
+                  type: varchar(45)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+              - column:
+                  name: updated_at
+                  type: datetime
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: create_currencies_table
+      author: muhammad_ahmed
+      changes:
+        - createTable:
+            tableName: currencies
+            columns:
+              - column:
+                  name: code
+                  type: varchar(3)
+                  constraints:
+                    primaryKey: true
+
+  - changeSet:
+      id: create_conversion_rates_table
+      author: muhammad_ahmed
+      changes:
+        - createTable:
+            tableName: conversion_rates
+            columns:
+              - column:
+                  name: id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+              - column:
+                  name: source_currency_code
+                  type: varchar(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: target_currency_code
+                  type: varchar(3)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: exchange_rate
+                  type: decimal(10, 5)
+                  constraints:
+                    nullable: false
+
+  - changeSet:
+      id: create_payment_statuses_table
+      author: muhammad_ahmed
+      changes:
+        - createTable:
+            tableName: payment_statuses
+            columns:
+              - column:
+                  name: code
+                  type: varchar(45)
+                  constraints:
+                    primaryKey: true
+
+# Adding foreign key constraints
+  - changeSet:
+      id: addFKs_accounts_table
+      author: muhammad_ahmed
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: accounts
+            baseColumnNames: bank_id
+            referencedTableName: banks
+            referencedColumnNames: id
+            constraintName: FK_bank_id
+
+        - addForeignKeyConstraint:
+            baseTableName: accounts
+            baseColumnNames: currency_code
+            referencedTableName: currencies
+            referencedColumnNames: code
+            constraintName: FK_currency_code
+
+  - changeSet:
+      id: addFKs_payments_table
+      author: muhammad_ahmed
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: payments
+            baseColumnNames: source_account_id
+            referencedTableName: accounts
+            referencedColumnNames: id
+            constraintName: FK_source_account_id
+
+        - addForeignKeyConstraint:
+            baseTableName: payments
+            baseColumnNames: target_account_id
+            referencedTableName: accounts
+            referencedColumnNames: id
+            constraintName: FK_target_account_id
+
+        - addForeignKeyConstraint:
+            baseTableName: payments
+            baseColumnNames: status_code
+            referencedTableName: payment_statuses
+            referencedColumnNames: code
+            constraintName: FK_status_code
+
+  - changeSet:
+      id: addFKs_conversion_rates_table
+      author: muhammad_ahmed
+      changes:
+        - addForeignKeyConstraint:
+            baseTableName: conversion_rates
+            baseColumnNames: source_currency_code
+            referencedTableName: currencies
+            referencedColumnNames: code
+            constraintName: FK_source_currency_code
+
+        - addForeignKeyConstraint:
+            baseTableName: conversion_rates
+            baseColumnNames: target_currency_code
+            referencedTableName: currencies
+            referencedColumnNames: code
+            constraintName: FK_target_currency_code

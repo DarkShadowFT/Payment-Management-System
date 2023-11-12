@@ -1,0 +1,23 @@
+databaseChangeLog:
+  - changeSet:
+      id: data-1.0.0-1
+      author: muhammad_ahmed
+      changes:
+        - insert:
+            tableName: payment_statuses
+            columns:
+              - column:
+                  name: code
+                  value: "PENDING"
+        - insert:
+            tableName: payment_statuses
+            columns:
+              - column:
+                  name: code
+                  value: "FAILED"
+        - insert:
+            tableName: payment_statuses
+            columns:
+              - column:
+                  name: code
+                  value: "SUCCESSFUL"

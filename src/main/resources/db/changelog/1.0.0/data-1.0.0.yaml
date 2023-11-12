@@ -1,0 +1,150 @@
+databaseChangeLog:
+  - changeSet:
+      id: add_data_banks_table
+      author: muhammad_ahmed
+      changes:
+        - insert:
+            tableName: banks
+            columns:
+              - column:
+                  name: bank_id
+                  value: CHAS
+              - column:
+                  name: name
+                  value: Chase Bank
+              - column:
+                  name: country
+                  value: US
+              - column:
+                  name: created_at
+                  value: NOW()
+        - insert:
+            tableName: banks
+            columns:
+              - column:
+                  name: bank_id
+                  value: ABAA
+              - column:
+                  name: name
+                  value: ABA Bank
+              - column:
+                  name: country
+                  value: GB
+              - column:
+                  name: created_at
+                  value: NOW()
+        - insert:
+            tableName: banks
+            columns:
+              - column:
+                  name: bank_id
+                  value: MEZN
+              - column:
+                  name: name
+                  value: Meezan Bank
+              - column:
+                  name: country
+                  value: PK
+              - column:
+                  name: created_at
+                  value: NOW()
+
+  - changeSet:
+      id: add_data_currencies_table
+      author: muhammad_ahmed
+      changes:
+        - insert:
+            tableName: currencies
+            columns:
+              - column:
+                  name: code
+                  value: USD
+        - insert:
+            tableName: currencies
+            columns:
+              - column:
+                  name: code
+                  value: EUR
+        - insert:
+            tableName: currencies
+            columns:
+              - column:
+                  name: code
+                  value: PKR
+
+  - changeSet:
+      id: add_data_conversion_rates_table
+      author: muhammad_ahmed
+      changes:
+        - insert:
+            tableName: conversion_rates
+            columns:
+              - column:
+                  name: source_currency_code
+                  value: PKR
+              - column:
+                  name: target_currency_code
+                  value: EUR
+              - column:
+                  name: exchange_rate
+                  value: 0.0032
+        - insert:
+            tableName: conversion_rates
+            columns:
+              - column:
+                  name: source_currency_code
+                  value: PKR
+              - column:
+                  name: target_currency_code
+                  value: USD
+              - column:
+                  name: exchange_rate
+                  value: 0.0035
+        - insert:
+            tableName: conversion_rates
+            columns:
+              - column:
+                  name: source_currency_code
+                  value: EUR
+              - column:
+                  name: target_currency_code
+                  value: PKR
+              - column:
+                  name: exchange_rate
+                  value: 311.39
+        - insert:
+            tableName: conversion_rates
+            columns:
+              - column:
+                  name: source_currency_code
+                  value: EUR
+              - column:
+                  name: target_currency_code
+                  value: USD
+              - column:
+                  name: exchange_rate
+                  value: 1.09
+        - insert:
+            tableName: conversion_rates
+            columns:
+              - column:
+                  name: source_currency_code
+                  value: USD
+              - column:
+                  name: target_currency_code
+                  value: PKR
+              - column:
+                  name: exchange_rate
+                  value: 284.59
+        - insert:
+            tableName: conversion_rates
+            columns:
+              - column:
+                  name: source_currency_code
+                  value: USD
+              - column:
+                  name: target_currency_code
+                  value: EUR
+              - column:
+                  name: exchange_rate
+                  value: 0.91

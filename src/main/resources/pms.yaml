@@ -1,0 +1,498 @@
+openapi: 3.0.0
+info:
+  title: PMS API
+  version: 1.0.0
+servers:
+  - url: http://localhost:8080
+paths:
+  /api/v1/banks:
+    post:
+      summary: Create a new Bank
+      operationId: createBank
+      tags:
+        - Banks
+      security:
+        - adminAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/BankInfo'
+      responses:
+        '201':
+          description: Bank created successfully
+          headers:
+            Location:
+              description: "Location of the created resource i.e. /api/v1/banks/{bankId}"
+              schema:
+                type: string
+        '400':
+          description: Bank already exists!
+        '500':
+          description: Internal server error occurred!
+    get:
+      summary: Get list of Banks
+      operationId: getBanks
+      tags:
+        - Banks
+      security:
+        - adminAuth: []
+        - userAuth: []
+      responses:
+        '200':
+          description: List of Banks
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BanksResponse'
+        '500':
+          description: Internal server error occurred!
+  /api/v1/accounts:
+    post:
+      summary: Create an account
+      operationId: createAccount
+      tags:
+        - Accounts
+      security:
+        - userAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountRequest'
+      responses:
+        '201':
+          description: Account created successfully
+          headers:
+            Location:
+              description: "Location of the created resource i.e. /api/v1/accounts/{accountNumber}"
+              schema:
+                type: string
+        '400':
+          description: Account already exists!
+        '500':
+          description: Internal server error occurred!
+    get:
+      summary: Get list of accounts
+      operationId: getAccounts
+      tags:
+        - Accounts
+      security:
+        - adminAuth: []
+      responses:
+        '200':
+          description: List of accounts
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountsResponse'
+        '500':
+          description: Internal server error occurred!
+  /api/v1/accounts/{accountNumber}:
+    get:
+      summary: Get details of an account
+      operationId: getAccountDetails
+      tags:
+        - Accounts
+      security:
+        - adminAuth: []
+        - userAuth: []
+      parameters:
+        - $ref: '#/components/parameters/AccountNumberParam'
+      responses:
+        '200':
+          description: Account details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountResponse'
+        '404':
+          description: Account not found!
+        '500':
+          description: Internal server error occurred!
+    put:
+      summary: Update account information
+      operationId: updateAccount
+      tags:
+        - Accounts
+      security:
+        - userAuth: []
+      parameters:
+        - $ref: '#/components/parameters/AccountNumberParam'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AccountUpdateRequest'
+      responses:
+        '204':
+          description: Account updated successfully
+        '404':
+          description: Account not found!
+        '500':
+          description: Internal server error occurred!
+    delete:
+      summary: Delete account
+      operationId: deleteAccount
+      tags:
+        - Accounts
+      security:
+        - userAuth: []
+      parameters:
+        - $ref: '#/components/parameters/AccountNumberParam'
+      responses:
+        '204':
+          description: Account deleted successfully
+        '404':
+          description: Account not found!
+        '500':
+          description: Internal server error occurred!
+  /api/v1/accounts/{accountNumber}/payments:
+    get:
+      summary: Get payment history of an account
+      operationId: getPaymentHistory
+      tags:
+        - Accounts
+      security:
+        - adminAuth: []
+        - userAuth: []
+      parameters:
+        - $ref: '#/components/parameters/AccountNumberParam'
+      responses:
+        '200':
+          description: Payment history of the account
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/AccountPaymentsResponse'
+        '404':
+          description: Account not found!
+        '500':
+          description: Internal server error occurred!
+  /api/v1/accounts/{accountNumber}/balance:
+    get:
+      summary: Get account balance
+      operationId: getAccountBalance
+      tags:
+        - Balance
+      security:
+        - adminAuth: []
+        - userAuth: []
+      parameters:
+        - $ref: '#/components/parameters/AccountNumberParam'
+      responses:
+        '200':
+          description: Account balance
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/BalanceResponse'
+        '404':
+          description: Account not found!
+        '500':
+          description: Internal server error occurred!
+  /api/v1/payments:
+    post:
+      summary: Create a payment between two registered accounts
+      operationId: createPayment
+      tags:
+        - Payments
+      security:
+        - userAuth: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/PaymentRequest'
+      responses:
+        '201':
+          description: Payment created successfully
+          headers:
+            Location:
+              description: "Location of the created resource i.e. /api/v1/payments/{paymentId}"
+              schema:
+                type: string
+        '400':
+          description: Error in request
+        '500':
+          description: Internal server error occurred!
+    get:
+      summary: Get all payments
+      operationId: getAllPayments
+      tags:
+        - Payments
+      security:
+        - adminAuth: []
+      parameters:
+        - $ref: '#/components/parameters/SourceAccountNumberParam'
+        - $ref: '#/components/parameters/TargetAccountNumberParam'
+        - $ref: '#/components/parameters/PaymentStatusParam'
+      responses:
+        '200':
+          description: List of payments
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentsResponse'
+        '500':
+          description: Internal server error occurred!
+  /api/v1/payments/{paymentId}:
+    get:
+      summary: Get payment details by ID
+      operationId: getPaymentDetails
+      tags:
+        - Payments
+      security:
+        - adminAuth: []
+        - userAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PaymentIdParam'
+      responses:
+        '200':
+          description: Payment details
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentResponse'
+        '404':
+          description: Payment not found!
+        '500':
+          description: Internal server error occurred!
+  /api/v1/payments/{paymentId}/status:
+    get:
+      summary: Get payment status by ID
+      operationId: getPaymentStatus
+      tags:
+        - Payments
+      security:
+        - adminAuth: []
+        - userAuth: []
+      parameters:
+        - $ref: '#/components/parameters/PaymentIdParam'
+      responses:
+        '200':
+          description: Payment status
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/PaymentStatus'
+        '404':
+          description: Payment not found!
+        '500':
+          description: Internal server error occurred!
+components:
+  securitySchemes:
+    adminAuth:
+      type: http
+      scheme: basic
+    userAuth:
+      type: http
+      scheme: basic
+  schemas:
+    BankInfo:
+      type: object
+      properties:
+        name:
+          type: string
+          pattern: '^[A-Za-z ]+$'
+          minLength: 3
+          maxLength: 255
+        bankId:
+          $ref: '#/components/schemas/BankId'
+        country:
+          type: string
+          pattern: '^[A-Z]+$'
+          minLength: 2
+          maxLength: 2
+      required:
+        - name
+        - bankId
+        - country
+    BanksResponse:
+      type: object
+      properties:
+        banks:
+          type: array
+          items:
+            $ref: '#/components/schemas/BankInfo'
+    AccountResponse:
+      type: object
+      properties:
+        accountNumber:
+          $ref: '#/components/schemas/AccountNumber'
+        holderName:
+          $ref: '#/components/schemas/HolderName'
+        currency:
+          $ref: '#/components/schemas/CurrencyEnum'
+        bankId:
+          $ref: '#/components/schemas/BankId'
+    AccountRequest:
+      type: object
+      properties:
+        holderName:
+          $ref: '#/components/schemas/HolderName'
+        currency:
+          $ref: '#/components/schemas/CurrencyEnum'
+        bankId:
+          $ref: '#/components/schemas/BankId'
+      required:
+        - holderName
+        - currency
+        - bankId
+    AccountUpdateRequest:
+      type: object
+      properties:
+        holderName:
+          $ref: '#/components/schemas/HolderName'
+      required:
+        - holderName
+    AccountsResponse:
+      type: object
+      properties:
+        accounts:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountResponse'
+    AccountPayment:
+      type: object
+      properties:
+        paymentId:
+          type: string
+          format: uuid
+        targetAccountNumber:
+          $ref: '#/components/schemas/AccountNumber'
+        amount:
+          $ref: '#/components/schemas/Amount'
+        status:
+          $ref: '#/components/schemas/PaymentStatusEnum'
+        createdAt:
+          type: string
+          format: date-time
+    AccountPaymentsResponse:
+      type: object
+      properties:
+        accountPayments:
+          type: array
+          items:
+            $ref: '#/components/schemas/AccountPayment'
+    PaymentResponse:
+      type: object
+      properties:
+        paymentId:
+          type: string
+          format: uuid
+        sourceAccountNumber:
+          $ref: '#/components/schemas/AccountNumber'
+        targetAccountNumber:
+          $ref: '#/components/schemas/AccountNumber'
+        amount:
+          $ref: '#/components/schemas/Amount'
+        status:
+          $ref: '#/components/schemas/PaymentStatusEnum'
+        createdAt:
+          type: string
+          format: date-time
+    PaymentRequest:
+      type: object
+      properties:
+        sourceAccountNumber:
+          $ref: '#/components/schemas/AccountNumber'
+        targetAccountNumber:
+          $ref: '#/components/schemas/AccountNumber'
+        amount:
+          $ref: '#/components/schemas/Amount'
+      required:
+        - sourceAccountNumber
+        - targetAccountNumber
+        - amount
+    PaymentsResponse:
+      type: object
+      properties:
+        payments:
+          type: array
+          items:
+            $ref: '#/components/schemas/PaymentResponse'
+    BalanceResponse:
+      type: object
+      properties:
+        amount:
+          $ref: '#/components/schemas/Amount'
+        lastUpdatedPaymentId:
+          type: string
+          format: uuid
+        updatedAt:
+          type: string
+          format: date-time
+    CurrencyEnum:
+      type: string
+      enum:
+        - USD
+        - PKR
+        - EUR
+    PaymentStatus:
+      type: object
+      properties:
+        status:
+          $ref: '#/components/schemas/PaymentStatusEnum'
+    PaymentStatusEnum:
+      type: string
+      enum:
+        - SUCCESSFUL
+        - PENDING
+        - FAILED
+    HolderName:
+      type: string
+      pattern: '^[A-Za-z ]+$'
+      minLength: 3
+      maxLength: 255
+    BankId:
+      type: string
+      pattern: '^[A-Z]+$'
+      minLength: 4
+      maxLength: 4
+    AccountNumber:
+      type: string
+      pattern: '^[A-Za-z0-9]+$'
+    Amount:
+      type: number
+      minimum: 0.0
+      maximum: 9999999999999.99999
+
+  parameters:
+    AccountNumberParam:
+      name: accountNumber
+      in: path
+      description: The account number parameter
+      required: true
+      schema:
+        type: string
+    PaymentIdParam:
+      name: paymentId
+      in: path
+      description: The payment ID parameter
+      required: true
+      schema:
+        type: string
+        format: uuid
+    SourceAccountNumberParam:
+      name: sourceAccountNumber
+      in: query
+      description: The payments filter for sourceAccountNumber
+      schema:
+        type: string
+    TargetAccountNumberParam:
+      name: targetAccountNumber
+      in: query
+      description: The payments filter for targetAccountNumber
+      schema:
+        type: string
+    PaymentStatusParam:
+      name: status
+      in: query
+      description: The payments filter for payment status
+      schema:
+        $ref: '#/components/schemas/PaymentStatusEnum'

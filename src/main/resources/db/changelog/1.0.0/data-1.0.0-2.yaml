@@ -1,0 +1,30 @@
+databaseChangeLog:
+  - changeSet:
+      id: data-1.0.0-2
+      author: muhammad_ahmed
+      changes:
+        - insert:
+            tableName: users
+            columns:
+              - column:
+                  name: username
+                  value: "admin@pms.com"
+              - column:
+                  name: password
+                  value: "$2a$12$lkxEC2ECCHIgLY4yfs4.WOZYQCvOYdIrhtt9wEim9R5tVWzCThuD6"
+              - column:
+                  name: enabled
+                  value: true
+
+        - insert:
+            tableName: authorities
+            columns:
+              - column:
+                  name: username
+                  value: "admin@pms.com"
+              - column:
+                  name: user_id
+                  value: 1
+              - column:
+                  name: authority
+                  value: ROLE_ADMIN
