@@ -126,13 +126,13 @@ Make sure you have the following installed on your machine:
 1. Clone the repository:
 
     ```bash
-    git clone https://github.com/yourusername/payment-system-gateway.git
+    git clone https://github.com/DarkShadowFT/Payment-Management-System.git
     ```
 
 2. Navigate to the project folder:
 
     ```bash
-    cd payment-system-gateway
+    cd Payment-Management-System
     ```
 
 3. Build the project:
@@ -144,7 +144,7 @@ Make sure you have the following installed on your machine:
 4. Run the application:
 
     ```bash
-    java -jar target/payment-system-gateway.jar
+    java -jar target/pms-1.0.0-SNAPSHOT.jar
     ```
 
 5. Access the application at [http://localhost:8080](http://localhost:8080)
