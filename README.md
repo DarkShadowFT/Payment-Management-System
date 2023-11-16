@@ -1,10 +1,10 @@
-# Payment System Gateway
+# Payment Management System
 
-Welcome to the Payment System Gateway repository! This Spring Boot application serves as a seamless gateway between banks, facilitating secure and efficient payment processing.
+Welcome to the Payment Management System repository! This Spring Boot application serves as a seamless gateway between banks, facilitating secure and efficient payment processing.
 
 ## Best Industry Practices
 
-This Payment System Gateway project adheres to the best industry practices, ensuring robustness, maintainability, and adherence to coding standards.
+This Payment Management System project adheres to the best industry practices, ensuring robustness, maintainability, and adherence to coding standards.
 
 ### Key Features
 
@@ -50,7 +50,7 @@ The codebase is developed with a strong emphasis on clean code principles. Here 
 
 ## REST APIs
 
-Explore the user-friendly REST APIs provided by the Payment System Gateway for seamless payment management.
+Explore the user-friendly REST APIs provided by the Payment Management System for seamless payment management.
 
 ### Banks
 
